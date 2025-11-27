@@ -17,8 +17,7 @@ ActionVFX-Sample-Player is a lightweight technical demo that showcases how to in
 
 ---
 
-![Uploading Grabando #113.gif…]()
-
+![Grabando #113](https://github.com/user-attachments/assets/486b8846-f576-42c8-9e1c-be636e8a2e59)
 
 ---
 
