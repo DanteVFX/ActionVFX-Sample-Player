@@ -2,8 +2,6 @@
 
 ActionVFX-Sample-Player is a lightweight technical demo that showcases how to interact with the **public ActionVFX API** to fetch thumbnails, load metadata, and play video clips inside a simple interface built with **PySide6 (Qt)** and **OpenCV**.
 
-This project is **not** part of the official ActionVFX plugin and contains **no internal or proprietary logic**.  
-Instead, it serves as a public-facing example that demonstrates how a basic VFX media browser or asset viewer can be structured.
 
 ---
 
