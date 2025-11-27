@@ -1,9 +1,14 @@
-import nuke
+
+# Standard library
 import json
 import urllib.request
-from PySide6 import QtWidgets, QtGui, QtCore
-import cv2
 from functools import partial
+
+# Third-party
+import cv2
+import nuke
+from PySide6 import QtWidgets, QtGui, QtCore
+
 
 API_URL = "https://backend.actionvfx.com/api/v1/collections/18367/products"
 
@@ -11,7 +16,7 @@ API_URL = "https://backend.actionvfx.com/api/v1/collections/18367/products"
 class VideoThumbnailViewer(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(VideoThumbnailViewer, self).__init__(parent)
-        self.setWindowTitle("ActionVFX Viewer (Demo Público)")
+        self.setWindowTitle("ActionVFX Viewer (Public Demo)")
         self.setMinimumSize(640, 480)
 
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -23,7 +28,7 @@ class VideoThumbnailViewer(QtWidgets.QWidget):
         self.thumbnail_layout = QtWidgets.QHBoxLayout()
         self.layout.addLayout(self.thumbnail_layout)
 
-        # Controles de reproducción
+        # Main controls Play/Pause/Stop
         controls = QtWidgets.QHBoxLayout()
         self.play_btn = QtWidgets.QPushButton("Play")
         self.pause_btn = QtWidgets.QPushButton("Pause")
@@ -44,6 +49,15 @@ class VideoThumbnailViewer(QtWidgets.QWidget):
         self.load_data()
 
     def load_data(self):
+        """
+        Load data from the API and build the UI accordingly
+
+        This function makes a request to the API, parses the response and
+        builds the UI based on the data received. If an error occurs during
+        the request or parsing, an error message is displayed.
+
+        :raises Exception: If an error occurs during the request or parsing.
+        """
         try:
             request = urllib.request.Request(
                 API_URL,
@@ -56,7 +70,7 @@ class VideoThumbnailViewer(QtWidgets.QWidget):
                 self.build_ui()
 
         except Exception as e:
-            self.image_label.setText(f"Error al cargar datos:\n{e}")
+            self.image_label.setText(f"Error loading data:\n{e}")
 
     def build_ui(self):
         for item in self.data[:9]:
@@ -84,12 +98,13 @@ class VideoThumbnailViewer(QtWidgets.QWidget):
                     image = QtGui.QImage()
                     image.loadFromData(thumb_data)
                     btn.setIcon(QtGui.QIcon(QtGui.QPixmap.fromImage(image)))
+            
             except Exception as e:
-                print(f"Error cargando thumbnail: {e}")
+                print(f"Thumbnail loading error: {e}")
 
             self.thumbnail_layout.addWidget(btn)
 
-        # Mostrar primer elemento
+        # Show first video
         if self.data:
             first_poster = self.data[0]["video"]["poster"]
             first_video = next(
@@ -100,6 +115,13 @@ class VideoThumbnailViewer(QtWidgets.QWidget):
             self.load_image(first_poster, first_video)
 
     def load_image(self, poster_url, video_url):
+        """
+        Load an image from the given URL and set it as the thumbnail of the given video
+
+        param poster_url: The URL of the image to load
+        param video_url: The URL of the video to set the thumbnail for
+
+        """
         self.current_video_url = video_url
         try:
             request = urllib.request.Request(
@@ -157,6 +179,6 @@ class VideoThumbnailViewer(QtWidgets.QWidget):
                 self.stop_video()
 
 
-# Mostrar ventana
+# Show the UI
 viewer = VideoThumbnailViewer()
 viewer.show()
